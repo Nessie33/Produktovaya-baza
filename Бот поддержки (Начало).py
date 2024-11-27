@@ -64,15 +64,16 @@ async def buy_products(message):
 
 
 async def get_buying_list(message):
-    products = [
-        {'name': 'Product1', 'discription': 'описание 1', 'price': 100, 'image': 'img1.png'},
-        {'name': 'Product2', 'discription': 'описание 2', 'price': 200, 'image': 'img2.png'},
-        {'name': 'Product3', 'discription': 'описание 3', 'price': 300, 'image': 'img3.png'},
-        {'name': 'Product4', 'discription': 'описание 4', 'price': 400, 'image': 'img4.png'}
-    ]
+    products = get_all_products()
+    if not products:
+        await message.answer('Нет доступных продуктов')
+        return
+
     for number in products:
-        await message.answer(f'Название: {number["name"]} | Описание: {number["discription"]} | Цена: {number["price"]} * 100')
-        await message.answer_photo(photo=open(number["image"], 'rb'))
+        await message.answer(f'{number[0]} | Название: {number[1]} | Описание: {number[2]} | Цена: {number[3]} * 100')
+        for x in range(1, 5):
+            if x == number[0]:
+                await message.answer_photo(photo=open(f"img{x}.png", 'rb'))
     await message.answer('Выберите продукт для покупки:', reply_markup=new_menu)
 
 
